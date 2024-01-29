@@ -37,8 +37,9 @@ LEFT JOIN InvoiceLine I
 ON T.TrackId = I.TrackId
 WHERE I.TrackId IS NULL
 
--- Listar los artistas que aún no han vendido ninguna pista ESTE NO ME FUNCIONA!!
-/* SELECT A.Name
+-- Listar los artistas que aún no han vendido ninguna pista
+SELECT	A.Name,
+		COUNT(I.InvoiceId) AS VecesComprado
 FROM Artist A
 LEFT JOIN Album AL 
 ON A.ArtistId = AL.ArtistId
@@ -46,5 +47,5 @@ LEFT JOIN Track T
 ON AL.AlbumId = T.AlbumId
 LEFT JOIN InvoiceLine I
 ON T.TrackId = I.TrackId
-WHERE I.InvoiceId IS NULL OR I.InvoiceLineId IS NULL
-*/
+GROUP BY A.ArtistId, A.Name
+HAVING COUNT(I.InvoiceId) = 0
