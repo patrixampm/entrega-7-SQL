@@ -2,13 +2,13 @@
 SELECT P.Name,
 		P.UnitPrice
 FROM Track P
-WHERE P.UnitPrice BETWEEN 0 AND 1
+WHERE P.UnitPrice >= 1
 
 -- Listar las pistas de más de 4 minutos de duración
 SELECT	T.Name,
 		T.Milliseconds
 FROM Track T
-WHERE T.Milliseconds BETWEEN 240000 AND 600000
+WHERE T.Milliseconds > 240000
 
 -- Listar las pistas que tengan entre 2 y 3 minutos de duración
 SELECT	T.Name,
@@ -71,11 +71,10 @@ SELECT	L.Name,
 FROM Playlist L
 INNER JOIN PlaylistTrack P
 ON L.PlaylistId = P.PlaylistId
-GROUP BY L.PlaylistId, L.Name
+GROUP BY L.Name
 
 -- Listar las playlist (sin repetir ninguna) que tienen alguna canción de AC/DC
-SELECT	DISTINCT(P.PlaylistId),
-		P.Name
+SELECT	DISTINCT(P.Name)
 FROM Playlist P
 INNER JOIN PlaylistTrack PT
 ON PT.PlaylistId = P.PlaylistId
@@ -88,9 +87,8 @@ ON AR.ArtistId = A.ArtistId
 WHERE AR.Name = 'AC/DC'
 
 -- Listar las playlist que tienen alguna canción del artista Queen, junto con la cantidad que tienen
-SELECT	DISTINCT(P.PlaylistId),
-		COUNT(PT.TrackId) AS NumberOfTracks,
-		P.Name
+SELECT	DISTINCT(P.Name),
+		COUNT(PT.TrackId) AS NumberOfTracks
 FROM Playlist P
 INNER JOIN PlaylistTrack PT
 ON PT.PlaylistId = P.PlaylistId
@@ -101,7 +99,7 @@ ON A.AlbumId = T.AlbumId
 INNER JOIN Artist AR
 ON AR.ArtistId = A.ArtistId
 WHERE AR.Name = 'Queen'
-GROUP BY P.PlaylistId, P.Name
+GROUP BY P.Name
 
 -- Listar las pistas que no están en ninguna playlist
 SELECT	T.TrackId,
